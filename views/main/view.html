@@ -1,0 +1,68 @@
+{%extends 'layout.html'%}
+
+{%block content%}
+<div class="listBox">
+    <h1>{{content.dataValues.title}}</h1>
+    <p class="colDefault">
+        作者：<span class="colInfo">{{content.dataValues.user.username}}</span> -
+        时间：<span class="colInfo">{{content.dataValues.createdAt.toString()}}</span> -
+        阅读：<span class="colInfo">{{content.dataValues.views}}</span>
+    </p>
+    <dfn><p>{{content.dataValues.content}}</p></dfn>
+</div>
+
+    <div class="listBox message">
+        <h3 class="textLeft"><strong>评论</strong> <span class="em">一共有 <em id="messageCount">{{counts}}</em> 条评论</span></h3>
+
+        {% if userInfo.username %}
+        <p class="textLeft">{{userInfo.username}}</p>
+        <p class="textLeft clear">
+            <textarea id="messageContent"></textarea>
+            <input type="hidden" id="contentId" value="{{content.dataValues.id}}">
+            <button id="messageBtn" class="submit">提交</button>
+        </p>
+        {%else%}
+        <p class="bgDanger" style="line-height: 30px;">你还没有登录，请先登录！</p>
+        {%endif%}
+
+        <div class="messageList">
+            {% if comments.length != 0%}
+                {% for comment in comments %}
+                <div class="messageBox">
+                    <p class="name clear"><span class="fl">{{comment.dataValues.username}}</span><span class="fr">{{comment.dataValues.addTime.toString()}}</span></p>
+                    <p>{{comment.dataValues.comment}}</p>
+                </div>
+                {% endfor %}
+            {% else %}
+            <div class="messageBox">
+                <p>现在还没有评论</p>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="pager">
+            <ul class="clear">
+                <li class="previous">
+                    <a href="/view?contentid={{content.dataValues.id}}&page={{page-1}}">上一页</a>
+                </li>
+                <li id="pages">{{page}}/{{pages}}</li>
+                <li class="next">
+                    <a href="/view?contentid={{content.dataValues.id}}&page={{page+1}}">下一页</a>
+                </li>
+            </ul>
+        </div>
+
+        <!--<div class="messageList">-->
+            <!--<div class="messageBox"><p>还没有留言</p></div>-->
+        <!--</div>-->
+
+        <!--<div class="messageList" style="display: block;">-->
+            <!--<div class="messageBox">-->
+                <!--<p class="name clear"><span class="fl">admin</span><span class="fr">2016年07月29日 17:24:01</span></p><p>哈哈</p>-->
+            <!--</div>-->
+        <!--</div>-->
+
+    </div>
+
+<!--<script src="/public/js/comment.js"></script>-->
+{%endblock%}
